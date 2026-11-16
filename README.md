@@ -95,8 +95,9 @@ the probe tests use `Http::fake()`.
 
 ## Limits
 
-- **The post-quantum code is pure PHP and unaudited.** `paragonie/pqcrypto_compat` 0.3.4 says so in its README. It
-  matches all three X-Wing test vectors in this repo's tests, and X-Wing's X25519 half still protects you if the
+- **The post-quantum code is pure PHP and unaudited.** `paragonie/pqcrypto_compat` 0.3.4 says so in its README, and
+  Paragon's announcement (7 April 2026) adds: "There will be bugs. Don't rush to deploy this into production yet."
+  It matches all three X-Wing test vectors in this repo's tests, and X-Wing's X25519 half still protects you if the
   ML-KEM half has a bug. Where you can, install Paragon's `ext-pqcrypto` (Rust): the sealer uses it automatically, and Paragon
   describes it as faster and "higher assurance".
 - **It is slow next to RSA.** On an Intel i5-10210U, sealing took 9.1 ms and opening 20.4 ms. RSA-2048
@@ -105,6 +106,9 @@ the probe tests use `Http::fake()`.
   Use a `text` column.
 - **X-Wing is still an Internet-Draft** (version 11, September 2026). ML-KEM-768 inside it is FIPS 203. The `pq1:`
   prefix leaves room for a format change.
+- **PHP 8.6 adds `sodium_crypto_kem_*()`** (X-Wing from libsodium 1.0.22), due for release on 19 November 2026. It
+  only exists when PHP is built against libsodium 1.0.22 or later, and Ubuntu 26.04 and Debian 13 ship 1.0.18. It
+  was not tested here, so this repository does not use it yet.
 - **The sealer does not replace TLS, Laravel's `Crypt` or password hashing.** Those are symmetric or hash-based and
   already fine. It replaces `openssl_seal()` and `openssl_public_encrypt()`.
 
